@@ -34,12 +34,18 @@
 %% @private
 start_link() ->
     ChildsSpec = [
+          #{ id => pg,
+             start => {pg, start_link, []},
+             restart => permanent,
+             type => worker,
+             modules => [pg]
+           }
 %%        #{
 %%            id => nkserver_node,
 %%            start => {nkserver_node, start_link, []}
 %%        }
     ],
-    supervisor:start_link({local, ?MODULE}, ?MODULE, 
+    supervisor:start_link({local, ?MODULE}, ?MODULE,
                             {{one_for_one, 10, 60}, ChildsSpec}).
 
 %% @private
@@ -51,5 +57,3 @@ start_services_sup() ->
 %% @private
 init(ChildSpecs) ->
     {ok, ChildSpecs}.
-
-
