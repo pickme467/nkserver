@@ -167,7 +167,7 @@ get_status_all() ->
             end
         end,
         [],
-        pg:get_members(?MODULE)).
+        pg2:get_members(?MODULE)).
 
 
 %% @doc Gets all instances in all nodes
@@ -246,8 +246,10 @@ init(#{id:=SrvId, class:=Class, use_master:=UseMaster}=Service) ->
                     State2
             end,
             self() ! nkserver_timed_check_status,
-            pg:join(?MODULE, self()),
-            pg:join({?MODULE, SrvId}, self()),
+            pg2:create(?MODULE),
+            pg2:join(?MODULE, self()),
+            pg2:create({?MODULE, SrvId}),
+            pg2:join({?MODULE, SrvId}, self()),
             ?LLOG(notice, "service server started (~p, ~p)",
                      [State2#state.worker_sup_pid, self()], State2),
             {ok, State3};

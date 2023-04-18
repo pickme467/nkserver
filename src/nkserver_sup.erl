@@ -34,12 +34,6 @@
 %% @private
 start_link() ->
     ChildsSpec = [
-          #{ id => pg,
-             start => {pg, start_link, []},
-             restart => permanent,
-             type => worker,
-             modules => [pg]
-           }
 %%        #{
 %%            id => nkserver_node,
 %%            start => {nkserver_node, start_link, []}
